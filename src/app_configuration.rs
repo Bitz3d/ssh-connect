@@ -3,7 +3,7 @@ use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
 #[allow(unused)]
-pub struct ConnectionData {
+pub struct ServerData {
     username: String,
     path: String,
     ip: String,
@@ -19,9 +19,9 @@ pub struct Download {
 #[derive(Debug, Deserialize)]
 #[allow(unused)]
 pub struct AppConfig {
-    prod: ConnectionData,
-    uat21: ConnectionData,
-    uat22: ConnectionData,
+    prod: ServerData,
+    uat21: ServerData,
+    uat22: ServerData,
     download: Download
 }
 
@@ -37,19 +37,19 @@ impl AppConfig {
         s.try_deserialize()
     }
 
-    fn prod(&self) -> &ConnectionData {
+    fn prod(&self) -> &ServerData {
         &self.prod
     }
-    fn uat21(&self) -> &ConnectionData {
+    fn uat21(&self) -> &ServerData {
         &self.uat21
     }
-    fn uat22(&self) -> &ConnectionData {
+    fn uat22(&self) -> &ServerData {
         &self.uat22
     }
 
 
 
-    pub fn get_env_variables(&self, env: &String) -> &ConnectionData {
+    pub fn get_env_variables(&self, env: &String) -> &ServerData {
         if "uat21" == env {
             return self.uat21();
         }
@@ -64,7 +64,7 @@ impl AppConfig {
     }
 }
 
-impl ConnectionData {
+impl ServerData {
     pub fn username(&self) -> &str {
         &self.username
     }

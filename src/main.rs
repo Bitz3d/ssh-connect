@@ -10,7 +10,7 @@ use ssh2::Session;
 
 use app_configuration::AppConfig;
 
-use crate::app_configuration::ConnectionData;
+use crate::app_configuration::ServerData;
 
 mod app_configuration;
 
@@ -21,7 +21,7 @@ fn main() {
 
     let settings = AppConfig::new().unwrap();
 
-    let configuration: &ConnectionData = settings.get_env_variables(server_env);
+    let configuration: &ServerData = settings.get_env_variables(server_env);
 
     // Connect to the local SSH server
     let tcp = TcpStream::connect(configuration.ip().to_string()).unwrap();
