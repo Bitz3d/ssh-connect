@@ -18,14 +18,14 @@ pub struct Download {
 
 #[derive(Debug, Deserialize)]
 #[allow(unused)]
-pub struct Settings {
+pub struct AppConfig {
     prod: ConnectionData,
     uat21: ConnectionData,
     uat22: ConnectionData,
     download: Download
 }
 
-impl Settings {
+impl AppConfig {
     pub fn new() -> Result<Self, ConfigError> {
         let s = Config::builder()
             // Start off by merging in the "default" configuration file

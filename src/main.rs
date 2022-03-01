@@ -8,18 +8,18 @@ use std::path::Path;
 use rpassword::read_password;
 use ssh2::Session;
 
-use settings::Settings;
+use app_configuration::AppConfig;
 
-use crate::settings::ConnectionData;
+use crate::app_configuration::ConnectionData;
 
-mod settings;
+mod app_configuration;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
     let server_env = &args[1];
     let filename = &args[2];
 
-    let settings = Settings::new().unwrap();
+    let settings = AppConfig::new().unwrap();
 
     let configuration: &ConnectionData = settings.get_env_variables(server_env);
 
