@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 use std::path::Path;
+
 use config::{Config, ConfigError, Environment, File};
 use serde::Deserialize;
 
@@ -14,22 +15,20 @@ pub struct ServerData {
 #[derive(Debug, Deserialize)]
 #[allow(unused)]
 pub struct Download {
-    path: String
-
+    path: String,
 }
 
 #[derive(Debug, Deserialize)]
 #[allow(unused)]
 pub struct AppConfig {
     servers_data: HashMap<String, ServerData>,
-    download: Download
+    download: Download,
 }
 
 impl AppConfig {
-    pub fn new(server_env: &String) -> Result<Self, ConfigError> {
+    pub fn new() -> Result<Self, ConfigError> {
         let s = Config::builder()
             // Start off by merging in the "default" configuration file
-            // .add_source(File::with_name("./config.toml"))
             .add_source(File::from(Path::new("./config.yml")))
             .add_source(Environment::with_prefix("app"))
             .build()?;
@@ -42,8 +41,8 @@ impl AppConfig {
         &self.download
     }
 
-    pub fn servers_data(&self) -> &HashMap<String, ServerData> {
-        &self.servers_data
+    pub fn config(&self, server_env: &String) -> &ServerData {
+        self.servers_data.get(server_env).unwrap()
     }
 }
 
