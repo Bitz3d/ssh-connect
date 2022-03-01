@@ -1,0 +1,17 @@
+[prod]
+username =
+path =
+ip =
+
+[uat21]
+username =
+path =
+ip =
+
+[uat22]
+username =
+path =
+ip =
+
+[download]
+path =
