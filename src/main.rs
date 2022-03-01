@@ -19,42 +19,46 @@ fn main() {
     let server_env = &args[1];
     let filename = &args[2];
 
-    let settings = AppConfig::new().unwrap();
+    let settings = AppConfig::new(server_env).unwrap();
 
-    let configuration: &ServerData = settings.get_env_variables(server_env);
+    // let configuration: &ServerData = settings.get_env_variables(server_env);
 
-    // Connect to the local SSH server
-    let tcp = TcpStream::connect(configuration.ip().to_string()).unwrap();
-    let mut sess = Session::new().unwrap();
-    sess.set_tcp_stream(tcp);
-    sess.handshake().unwrap();
-
-    let password = get_password();
-
-    sess.userauth_password(configuration.username(), &password).unwrap();
-
-    let path: String = configuration.path().to_string();
-    let file_to_download = path + filename;
+    println!("{}", settings.download().path());
+    println!("{:?}", settings.servers_data().get("prod"));
 
 
-    let (mut remote_file, stat) = sess.scp_recv(Path::new(&file_to_download)).unwrap();
-
-
-    println!("Download {} file size: {}", filename, stat.size());
-    let mut contents = Vec::new();
-    remote_file.read_to_end(&mut contents).unwrap();
-    remote_file.send_eof().unwrap();
-    remote_file.wait_eof().unwrap();
-    remote_file.close().unwrap();
-    remote_file.wait_close().unwrap();
-
-    println!("File {} downloaded", filename);
-
-    let download_path: String = settings.download().path().to_owned() + filename;
-
-    println!("{}", download_path);
-
-    std::fs::write(download_path, &contents).unwrap();
+    // // Connect to the local SSH server
+    // let tcp = TcpStream::connect(configuration.ip().to_string()).unwrap();
+    // let mut sess = Session::new().unwrap();
+    // sess.set_tcp_stream(tcp);
+    // sess.handshake().unwrap();
+    //
+    // let password = get_password();
+    //
+    // sess.userauth_password(configuration.username(), &password).unwrap();
+    //
+    // let path: String = configuration.path().to_string();
+    // let file_to_download = path + filename;
+    //
+    //
+    // let (mut remote_file, stat) = sess.scp_recv(Path::new(&file_to_download)).unwrap();
+    //
+    //
+    // println!("Download {} file size: {}", filename, stat.size());
+    // let mut contents = Vec::new();
+    // remote_file.read_to_end(&mut contents).unwrap();
+    // remote_file.send_eof().unwrap();
+    // remote_file.wait_eof().unwrap();
+    // remote_file.close().unwrap();
+    // remote_file.wait_close().unwrap();
+    //
+    // println!("File {} downloaded", filename);
+    //
+    // let download_path: String = settings.download().path().to_owned() + filename;
+    //
+    // println!("{}", download_path);
+    //
+    // std::fs::write(download_path, &contents).unwrap();
 }
 
 fn get_password() -> String {
