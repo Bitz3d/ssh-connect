@@ -1,9 +1,12 @@
+use std::collections::HashMap;
+use std::path::Path;
+
 use config::{Config, ConfigError, Environment, File};
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
 #[allow(unused)]
-pub struct ConnectionData {
+pub struct ServerData {
     username: String,
     path: String,
     ip: String,
@@ -12,24 +15,21 @@ pub struct ConnectionData {
 #[derive(Debug, Deserialize)]
 #[allow(unused)]
 pub struct Download {
-    path: String
-
+    path: String,
 }
 
 #[derive(Debug, Deserialize)]
 #[allow(unused)]
-pub struct Settings {
-    prod: ConnectionData,
-    uat21: ConnectionData,
-    uat22: ConnectionData,
-    download: Download
+pub struct AppConfig {
+    servers_data: HashMap<String, ServerData>,
+    download: Download,
 }
 
-impl Settings {
+impl AppConfig {
     pub fn new() -> Result<Self, ConfigError> {
         let s = Config::builder()
             // Start off by merging in the "default" configuration file
-            .add_source(File::with_name("./config.toml"))
+            .add_source(File::from(Path::new("./config.yml")))
             .add_source(Environment::with_prefix("app"))
             .build()?;
 
@@ -37,34 +37,16 @@ impl Settings {
         s.try_deserialize()
     }
 
-    fn prod(&self) -> &ConnectionData {
-        &self.prod
-    }
-    fn uat21(&self) -> &ConnectionData {
-        &self.uat21
-    }
-    fn uat22(&self) -> &ConnectionData {
-        &self.uat22
-    }
-
-
-
-    pub fn get_env_variables(&self, env: &String) -> &ConnectionData {
-        if "uat21" == env {
-            return self.uat21();
-        }
-        if "uat22" == env {
-            return self.uat22();
-        }
-        return self.prod();
-    }
-
     pub fn download(&self) -> &Download {
         &self.download
     }
+
+    pub fn config(&self, server_env: &String) -> &ServerData {
+        self.servers_data.get(server_env).unwrap()
+    }
 }
 
-impl ConnectionData {
+impl ServerData {
     pub fn username(&self) -> &str {
         &self.username
     }
