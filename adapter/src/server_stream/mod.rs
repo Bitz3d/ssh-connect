@@ -8,24 +8,25 @@ use crate::argument_parser::EnvironmentVariables;
 
 pub fn connect(variables: &EnvironmentVariables) -> (String, Vec<u8>) {
 
+    // configuration
     let app_config = AppConfig::new().unwrap();
-
     let configuration: &ServerData = app_config.config(&variables.server);
 
+
+    // server connection
     let tcp = TcpStream::connect(configuration.ip().to_string()).unwrap();
     let mut sess = Session::new().unwrap();
     sess.set_tcp_stream(tcp);
     sess.handshake().unwrap();
 
+    // authenticate
     let password = get_password();
-
     sess.userauth_password(configuration.username(), &password)
         .unwrap();
 
-    //
+    // download file
     let path: String = configuration.path().to_string();
     let file_to_download = path + &variables.filename;
-
     let (mut remote_file, stat) = sess.scp_recv(Path::new(&file_to_download)).unwrap();
 
     println!("Download {} file size: {}", variables.filename, stat.size());
