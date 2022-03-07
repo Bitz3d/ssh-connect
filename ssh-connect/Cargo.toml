@@ -7,7 +7,6 @@ edition = "2021"
 
 [dependencies]
 configuration = { version = "0.1", path = "../configuration" }
-ssh2 = "0.9"
+adapter = { version = "0.1", path = "../adapter" }
 chrono = "0.4"
-rpassword = "5.0.1"
 indicatif = "0.16.2"

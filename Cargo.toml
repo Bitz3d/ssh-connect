@@ -2,5 +2,6 @@
 members = [
     "configuration",
     "domain",
-    "ssh-connect"
+    "ssh-connect",
+    "adapter"
 ]
