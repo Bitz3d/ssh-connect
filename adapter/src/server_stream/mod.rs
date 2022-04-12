@@ -51,3 +51,8 @@ fn get_password() -> String {
     std::io::stdout().flush().unwrap();
     read_password().unwrap()
 }
+
+
+fn progress_bar(){
+
+}
