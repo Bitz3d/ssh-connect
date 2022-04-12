@@ -1,16 +1,16 @@
 servers_data:
   prod:
-    username: "prod"
-    path: "/var/log/tomcat/"
+    username: ""
+    path: ""
     ip: ""
   uat21:
-    username: "root"
-    path: "/var/log/tomcat/"
-    ip: "192.168.159.144:22"
+    username: ""
+    path: ""
+    ip: ""
   uat22:
-    username: "root"
-    path: "/var/log/tomcat/"
-    ip: "192.168.159.143:22"
+    username: ""
+    path: ""
+    ip: ""
 
 download:
-  path: "/Users/rafalc/Downloads/"
+  path: ""
